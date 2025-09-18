@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="card">
+  <h2 style="margin:0 0 10px">Admin Dashboard</h2>
+  <p>Welcome, {{ current_user.login_id }}.</p>
+  <ul>
+    <li><a href="{{ url_for('admin_schools_list') }}">Manage Schools</a></li>
+    <li><a href="{{ url_for('admin_teachers_list') }}">Manage Teachers</a></li>
+    <li><a href="{{ url_for('admin_subjects_list') }}">Manage Subjects</a></li>
+    <li><a href="{{ url_for('admin_periods_list') }}">Manage Periods</a></li>
+    <li><a href="{{ url_for('admin_assignments_list') }}">Teacher Assignments</a></li>
+  </ul>
+</section>
+{% endblock %}

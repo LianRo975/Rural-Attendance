@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="card">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+    <div style="display:flex;gap:8px;align-items:center">
+      <h2 style="margin:0">Teacher Assignments</h2>
+      <form method="get" action="{{ url_for('admin_assignments_list') }}">
+        <label for="school_id" style="font-size:14px;color:var(--muted)">School:</label>
+        <select name="school_id" id="school_id" onchange="this.form.submit()"
+                style="padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff">
+          <option value="">All</option>
+          {% for s in schools %}
+            <option value="{{ s.id }}" {% if selected_school_id==s.id %}selected{% endif %}>{{ s.name }}</option>
+          {% endfor %}
+        </select>
+      </form>
+    </div>
+    <a class="btn btn-primary" href="{{ url_for('admin_assignments_new') }}">New Assignment</a>
+  </div>
+
+  {% if assignments %}
+    <table style="width:100%;border-collapse:collapse;margin-top:12px">
+      <thead>
+        <tr style="text-align:left;border-bottom:1px solid var(--border)">
+          <th style="padding:10px">Teacher</th>
+          <th style="padding:10px">Subject</th>
+          <th style="padding:10px">Class / Section</th>
+          <th style="padding:10px">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in assignments %}
+        <tr style="border-bottom:1px solid var(--border)">
+          <td style="padding:10px">{{ a.teacher_name }}</td>
+          <td style="padding:10px">{{ a.subject_name }}</td>
+          <td style="padding:10px">{{ a.class_name }} / {{ a.section_name }}</td>
+          <td style="padding:10px;white-space:nowrap">
+            <form method="post" action="{{ url_for('admin_assignments_delete', assignment_id=a.id) }}"
+                  style="display:inline" onsubmit="return confirm('Delete this assignment?');">
+              <button class="btn btn-ghost" type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p style="margin-top:12px;color:var(--muted)">No assignments found.</p>
+  {% endif %}
+</section>
+{% endblock %}

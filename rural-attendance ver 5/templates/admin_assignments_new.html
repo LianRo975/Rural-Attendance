@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="card" style="max-width:800px">
+  <h2 style="margin:0 0 10px">New Teacher Assignment</h2>
+  {% if error %}<p style="color:#b91c1c;margin-top:0">{{ error }}</p>{% endif %}
+
+  <form method="get" action="{{ url_for('admin_assignments_new') }}" style="margin-bottom:12px">
+    <label for="school_id" style="display:block;font-weight:600;margin-bottom:6px">Choose School *</label>
+    <div style="display:flex;gap:8px">
+      <select id="school_id" name="school_id" required
+              style="padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:#fff">
+        <option value="">-- Select --</option>
+        {% for s in schools %}
+          <option value="{{ s.id }}" {% if school_id==s.id %}selected{% endif %}>{{ s.name }}</option>
+        {% endfor %}
+      </select>
+      <button class="btn btn-ghost" type="submit">Load</button>
+    </div>
+  </form>
+
+  {% if school_id %}
+  <form method="post" action="{{ url_for('admin_assignments_new') }}">
+    <input type="hidden" name="school_id" value="{{ school_id }}" />
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div>
+        <label style="display:block;font-weight:600;margin-bottom:6px" for="teacher_id">Teacher *</label>
+        <select id="teacher_id" name="teacher_id" required
+                style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:#fff">
+          {% for t in teachers %}<option value="{{ t.id }}">{{ t.name }} — {{ t.email }}</option>{% endfor %}
+        </select>
+      </div>
+      <div>
+        <label style="display:block;font-weight:600;margin-bottom:6px" for="subject_id">Subject *</label>
+        <select id="subject_id" name="subject_id" required
+                style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:#fff">
+          {% for sub in subjects %}<option value="{{ sub.id }}">{{ sub.name }}</option>{% endfor %}
+        </select>
+      </div>
+      <div>
+        <label style="display:block;font-weight:600;margin-bottom:6px" for="class_id">Class *</label>
+        <select id="class_id" name="class_id" required
+                style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:#fff">
+          {% for opt in sections|groupby('class_id') %}
+            {% set cid = opt.grouper %}
+            {% set first = opt.list[0] %}
+            <option value="{{ cid }}">{{ first.class_name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div>
+        <label style="display:block;font-weight:600;margin-bottom:6px" for="section_id">Section *</label>
+        <select id="section_id" name="section_id" required
+                style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:#fff">
+          {% for s in sections %}
+            <option value="{{ s.section_id }}">{{ s.class_name }} - {{ s.section_name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:12px">
+      <button class="btn btn-primary" type="submit">Save</button>
+      <a class="btn btn-ghost" href="{{ url_for('admin_assignments_list', school_id=school_id) }}">Cancel</a>
+    </div>
+  </form>
+  {% endif %}
+</section>
+{% endblock %}

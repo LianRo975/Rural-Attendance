@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Page-specific styles (compact, edge-to-edge friendly) -->
+<style>
+  .hero{
+    display:grid;
+    grid-template-columns: 2fr 1fr;  /* main text larger */
+    gap:16px;
+    align-items:start;
+    margin-bottom:20px;
+  }
+  .hero h2{margin:0 0 10px; font-size:34px; line-height:1.2}
+  .hero p{color:var(--muted); max-width:85ch; margin:0}
+  .cta{display:flex; gap:12px; margin-top:18px}
+  @media (max-width:900px){ .hero{grid-template-columns:1fr} }
+  .about{margin-top:18px}
+</style>
+
+<section class="hero">
+  <div>
+    <h2>Automate attendance with accuracy & transparency</h2>
+    <p>
+      Track student & teacher attendance period-wise across multiple schools in India.
+      Today’s MVP includes the landing page. Next: Login → Role-based views → Basic attendance.
+    </p>
+    <div class="cta">
+      <a href="/login" class="btn btn-primary" aria-disabled="true">Login</a>
+      <a href="#about" class="btn btn-ghost">Learn More</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">Quick Links</h3>
+    <ul style="margin:10px 0 0 18px">
+      <li><a href="/health">Health check</a></li>
+      <li><a href="/ping">Ping</a></li>
+      <li><a href="/raw">Raw render test</a></li>
+    </ul>
+    <p style="margin-top:12px;color:var(--muted);font-size:14px">
+      These help verify the server while we build features.
+    </p>
+  </div>
+</section>
+
+<!-- About -->
+<section id="about" class="card" style="margin-top:16px">
+  <h3 style="margin:0 0 8px">About the Application</h3>
+  <ul style="margin:8px 0 0 18px">
+    <li>Multi-school support; classes <strong>LKG–12</strong>; sections; roles: <em>Admin</em>, <em>Teacher</em>, <em>Student</em>.</li>
+    <li><strong>CRUD</strong>: Schools, Classes, Sections, Teachers, Students, Subjects, Periods, Teacher Assignments.</li>
+    <li><strong>Period-wise attendance</strong>: per <em>class × section × period × date</em>; quick mark all; save anytime.</li>
+    <li><strong>Daily class report</strong>: end-of-day summary by section (Present / Absent / Total).</li>
+    <li><strong>Fast seeder</strong>: optional purge + bulk seed of schools/teachers/subjects/periods/students + 1–2 week timetable.</li>
+    <li>Role-based dashboards & navigation; audit-friendly timestamps on all entities.</li>
+    <li>Tech stack: HTML/JS (frontend), <strong>Flask</strong> (backend), <strong>SQLite</strong> (DB). Face recognition & RFID integration next.</li>
+    <li>Responsive, lightweight UI; edge-to-edge layout for wide screens.</li>
+  </ul>
+  <p style="color:var(--muted); margin-top:10px">
+    Note: Face/vision capture screens will be added in upcoming versions.
+  </p>
+</section>
+
+{% endblock %}

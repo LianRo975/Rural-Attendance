@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="card">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+    <h2 style="margin:0">Daily Attendance — {{ cls.name }} • {{ date_str }}</h2>
+    <form method="get" action="{{ url_for('attendance_report_daily', class_id=cls.id) }}">
+      <input name="date" value="{{ date_str }}" style="padding:8px;border:1px solid var(--border);border-radius:8px">
+      <button class="btn btn-primary" type="submit">Go</button>
+    </form>
+  </div>
+
+  {% if summary and summary|length > 0 %}
+    <table style="width:100%;border-collapse:collapse;margin-top:12px">
+      <thead>
+        <tr style="text-align:left;border-bottom:1px solid var(--border)">
+          <th style="padding:10px">Section</th>
+          <th style="padding:10px">Present</th>
+          <th style="padding:10px">Absent</th>
+          <th style="padding:10px">Total Marked</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in summary %}
+        <tr style="border-bottom:1px solid var(--border)">
+          <td style="padding:10px">{{ row.section_name }}</td>
+          <td style="padding:10px">{{ row.present or 0 }}</td>
+          <td style="padding:10px">{{ row.absent or 0 }}</td>
+          <td style="padding:10px">{{ row.total or 0 }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p style="margin-top:12px;color:var(--muted)">No attendance found for this class/date yet.</p>
+  {% endif %}
+
+  <div style="margin-top:12px">
+    <a class="btn btn-ghost" href="{{ url_for('dashboard_teacher') }}">← Back</a>
+  </div>
+</section>
+{% endblock %}

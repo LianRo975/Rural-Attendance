@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="card" style="max-width:640px">
+  <h2 style="margin:0 0 10px">Edit Subject</h2>
+  {% if error %}<p style="color:#b91c1c;margin-top:0">{{ error }}</p>{% endif %}
+  <form method="post" action="{{ url_for('admin_subjects_edit', subject_id=subject.id) }}">
+    <div style="margin-bottom:12px">
+      <label style="display:block;font-weight:600;margin-bottom:6px" for="school_id">School *</label>
+      <select id="school_id" name="school_id" required
+              style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:#fff">
+        {% for s in schools %}
+          <option value="{{ s.id }}" {% if s.id == subject.school_id %}selected{% endif %}>{{ s.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div style="margin-bottom:12px">
+      <label style="display:block;font-weight:600;margin-bottom:6px" for="name">Subject Name *</label>
+      <input id="name" name="name" required value="{{ subject.name }}"
+             style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:#fff">
+    </div>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-primary" type="submit">Save Changes</button>
+      <a class="btn btn-ghost" href="{{ url_for('admin_subjects_list', school_id=subject.school_id) }}">Cancel</a>
+    </div>
+  </form>
+</section>
+{% endblock %}

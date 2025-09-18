@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="card">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+    <h2 style="margin:0">Mark Attendance — {{ cls.name }} / Section {{ section_id }} • {{ period.name if period else '' }} • {{ date_str }}</h2>
+    <div>
+      <button form="attForm" name="action" value="save" class="btn btn-primary" type="submit">Save</button>
+    </div>
+  </div>
+
+  <form id="attForm" method="post" action="{{ url_for('attendance_mark', class_id=class_id, section_id=section_id, period_id=period_id, date=date_str) }}">
+    <input type="hidden" name="class_id" value="{{ class_id }}">
+    <input type="hidden" name="section_id" value="{{ section_id }}">
+    <input type="hidden" name="period_id" value="{{ period_id }}">
+    <input type="hidden" name="date" value="{{ date_str }}">
+
+    <div style="display:flex;gap:8px;margin:12px 0">
+      <a href="#" onclick="toggleAll('Present');return false;" class="btn btn-ghost">Mark All Present</a>
+      <a href="#" onclick="toggleAll('Absent');return false;" class="btn btn-ghost">Mark All Absent</a>
+    </div>
+
+    <div style="overflow:auto">
+      <table style="width:100%;border-collapse:collapse">
+        <thead>
+          <tr style="text-align:left;border-bottom:1px solid var(--border)">
+            <th style="padding:10px">Roll</th>
+            <th style="padding:10px">Student</th>
+            <th style="padding:10px">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for s in students %}
+          <tr style="border-bottom:1px solid var(--border)">
+            <td style="padding:10px">{{ s.roll_no or '—' }}</td>
+            <td style="padding:10px">{{ s.name }}</td>
+            <td style="padding:10px">
+              <label style="margin-right:12px">
+                <input type="radio" name="status_{{ s.student_id }}" value="Present" {% if s.status == 'Present' %}checked{% endif %}> Present
+              </label>
+              <label>
+                <input type="radio" name="status_{{ s.student_id }}" value="Absent" {% if s.status == 'Absent' %}checked{% endif %}> Absent
+              </label>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div style="display:flex;gap:10px;margin-top:12px">
+      <button class="btn btn-primary" name="action" value="save" type="submit">Save</button>
+      <a class="btn btn-ghost" href="{{ url_for('attendance_select', class_id=class_id) }}">Change Period</a>
+    </div>
+  </form>
+</section>
+
+<script>
+  function toggleAll(val){
+    const rows = document.querySelectorAll("input[type=radio][value='Present'], input[type=radio][value='Absent']");
+    rows.forEach(r => {
+      if(r.value === val){
+        // set the radio in the same group
+        const name = r.getAttribute('name');
+        if(name && name.startsWith('status_')){
+          const group = document.getElementsByName(name);
+          group.forEach(g => { if(g.value === val) g.checked = true; });
+        }
+      }
+    });
+  }
+</script>
+{% endblock %}

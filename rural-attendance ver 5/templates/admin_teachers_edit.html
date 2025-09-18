@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="card" style="max-width:700px">
+  <h2 style="margin:0 0 10px">Edit Teacher</h2>
+  {% if error %}<p style="color:#b91c1c;margin-top:0">{{ error }}</p>{% endif %}
+  <form method="post" action="{{ url_for('admin_teachers_edit', teacher_id=teacher.id) }}">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div>
+        <label for="name" style="display:block;font-weight:600;margin-bottom:6px">Name *</label>
+        <input id="name" name="name" required value="{{ teacher.name }}"
+               style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:#fff" />
+      </div>
+      <div>
+        <label for="email" style="display:block;font-weight:600;margin-bottom:6px">Email *</label>
+        <input id="email" name="email" type="email" required value="{{ teacher.email }}"
+               style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:#fff" />
+      </div>
+      <div>
+        <label for="phone" style="display:block;font-weight:600;margin-bottom:6px">Phone</label>
+        <input id="phone" name="phone" value="{{ teacher.phone or '' }}"
+               style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:#fff" />
+      </div>
+      <div>
+        <label for="school_id" style="display:block;font-weight:600;margin-bottom:6px">School *</label>
+        <select id="school_id" name="school_id" required
+                style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:#fff">
+          {% for s in schools %}
+            <option value="{{ s.id }}" {% if s.id == teacher.school_id %}selected{% endif %}>{{ s.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:12px">
+      <button class="btn btn-primary" type="submit">Save Changes</button>
+      <a class="btn btn-ghost" href="{{ url_for('admin_teachers_list') }}">Cancel</a>
+    </div>
+  </form>
+</section>
+{% endblock %}

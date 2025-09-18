@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="card">
+  <div style="display:flex;justify-content:space-between;align-items:center">
+    <h2 style="margin:0">Schools</h2>
+    <a class="btn btn-primary" href="{{ url_for('admin_schools_new') }}">Add School</a>
+  </div>
+
+  {% if schools %}
+    <div style="overflow:auto;margin-top:12px">
+      <table style="width:100%;border-collapse:collapse">
+        <thead>
+          <tr style="text-align:left;border-bottom:1px solid var(--border)">
+            <th style="padding:10px">Name</th>
+            <th style="padding:10px">State</th>
+            <th style="padding:10px">District</th>
+            <th style="padding:10px">Address</th>
+            <th style="padding:10px">Created</th>
+            <th style="padding:10px">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for s in schools %}
+          <tr style="border-bottom:1px solid var(--border)">
+            <td style="padding:10px">{{ s.name }}</td>
+            <td style="padding:10px">{{ s.state or '—' }}</td>
+            <td style="padding:10px">{{ s.district or '—' }}</td>
+            <td style="padding:10px">{{ s.address or '—' }}</td>
+            <td style="padding:10px">{{ s.created_at }}</td>
+            <td style="padding:10px;white-space:nowrap">
+              <a class="btn btn-ghost" href="{{ url_for('admin_classes_list', school_id=s.id) }}">Classes</a>
+              <a class="btn btn-ghost" href="{{ url_for('admin_schools_edit', school_id=s.id) }}">Edit</a>
+              <form method="post" action="{{ url_for('admin_schools_delete', school_id=s.id) }}"
+                    style="display:inline" onsubmit="return confirm('Delete this school?');">
+                <button class="btn btn-ghost" type="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p style="margin-top:12px;color:var(--muted)">No schools yet. Click “Add School”.</p>
+  {% endif %}
+</section>
+{% endblock %}

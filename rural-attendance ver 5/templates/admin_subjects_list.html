@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="card">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+    <div style="display:flex;gap:8px;align-items:center">
+      <h2 style="margin:0">Subjects</h2>
+      <form method="get" action="{{ url_for('admin_subjects_list') }}">
+        <label for="school_id" style="font-size:14px;color:var(--muted)">School:</label>
+        <select name="school_id" id="school_id" onchange="this.form.submit()"
+                style="padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff">
+          {% for s in schools %}
+            <option value="{{ s.id }}" {% if selected_school_id==s.id %}selected{% endif %}>{{ s.name }}</option>
+          {% endfor %}
+        </select>
+      </form>
+    </div>
+    <a class="btn btn-primary" href="{{ url_for('admin_subjects_new') }}">Add Subject</a>
+  </div>
+
+  {% if subjects %}
+    <table style="width:100%;border-collapse:collapse;margin-top:12px">
+      <thead>
+        <tr style="text-align:left;border-bottom:1px solid var(--border)">
+          <th style="padding:10px">Name</th>
+          <th style="padding:10px">Created</th>
+          <th style="padding:10px">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for sub in subjects %}
+        <tr style="border-bottom:1px solid var(--border)">
+          <td style="padding:10px">{{ sub.name }}</td>
+          <td style="padding:10px">{{ sub.created_at }}</td>
+          <td style="padding:10px;white-space:nowrap">
+            <a class="btn btn-ghost" href="{{ url_for('admin_subjects_edit', subject_id=sub.id) }}">Edit</a>
+            <form method="post" action="{{ url_for('admin_subjects_delete', subject_id=sub.id) }}"
+                  style="display:inline" onsubmit="return confirm('Delete this subject?');">
+              <button class="btn btn-ghost" type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p style="margin-top:12px;color:var(--muted)">No subjects found for this school.</p>
+  {% endif %}
+</section>
+{% endblock %}

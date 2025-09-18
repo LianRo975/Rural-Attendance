@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="card">
+  <h2 style="margin:0 0 10px">Add School</h2>
+
+  {% if error %}<p style="color:#b91c1c;margin-top:0">{{ error }}</p>{% endif %}
+
+  <form method="post" action="{{ url_for('admin_schools_new') }}" style="max-width:640px">
+    <div style="margin-bottom:12px">
+      <label for="name" style="display:block;font-weight:600;margin-bottom:6px">School Name *</label>
+      <input id="name" name="name" required
+             style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:#fff" />
+    </div>
+
+    <div style="margin-bottom:12px">
+      <label for="state" style="display:block;font-weight:600;margin-bottom:6px">State</label>
+      <input id="state" name="state"
+             style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:#fff" />
+    </div>
+
+    <div style="margin-bottom:12px">
+      <label for="district" style="display:block;font-weight:600;margin-bottom:6px">District</label>
+      <input id="district" name="district"
+             style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:#fff" />
+    </div>
+
+    <div style="margin-bottom:12px">
+      <label for="address" style="display:block;font-weight:600;margin-bottom:6px">Address</label>
+      <textarea id="address" name="address" rows="3"
+        style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:#fff"></textarea>
+    </div>
+
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-primary" type="submit">Save</button>
+      <a class="btn btn-ghost" href="{{ url_for('admin_schools_list') }}">Cancel</a>
+    </div>
+  </form>
+</section>
+{% endblock %}

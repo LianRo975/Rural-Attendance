@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="card" style="max-width:860px">
+  <h2 style="margin:0 0 10px">Take Attendance — Select Details</h2>
+  <form method="post">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div>
+        <label style="display:block;font-weight:600;margin-bottom:6px">Class *</label>
+        {% if cls %}
+          <input readonly value="{{ cls.name }} (School ID: {{ cls.school_id }})"
+                 style="width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;background:#f9fafb">
+          <input type="hidden" name="class_id" value="{{ cls.id }}">
+        {% else %}
+          <p style="color:var(--muted)">Open this page via a class context (e.g., add a link “Take Attendance” next to a class).</p>
+        {% endif %}
+      </div>
+
+      <div>
+        <label style="display:block;font-weight:600;margin-bottom:6px">Section *</label>
+        <select name="section_id" required
+                style="width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;background:#fff">
+          {% for s in sections %}
+            <option value="{{ s.id }}">{{ s.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div>
+        <label style="display:block;font-weight:600;margin-bottom:6px">Period *</label>
+        <select name="period_id" required
+                style="width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;background:#fff">
+          {% for p in periods %}
+            <option value="{{ p.id }}">{{ p.name }} ({{ p.start_time }}–{{ p.end_time }})</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div>
+        <label style="display:block;font-weight:600;margin-bottom:6px">Date *</label>
+        <input name="date" value="{{ today }}"
+               style="width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;background:#fff">
+      </div>
+    </div>
+
+    <div style="display:flex;gap:10px;margin-top:12px">
+      <button class="btn btn-primary" type="submit">Continue</button>
+      <a class="btn btn-ghost" href="{{ url_for('dashboard_teacher') }}">Cancel</a>
+    </div>
+  </form>
+</section>
+{% endblock %}

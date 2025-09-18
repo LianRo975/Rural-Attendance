@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ APP_NAME }} — {{ APP_VERSION }}</title>
+
+  <!-- Edge-to-edge, light theme -->
+  <style>
+    :root{
+      --bg:#f9fafb;        /* page background */
+      --text:#111827;      /* main text */
+      --muted:#4b5563;     /* secondary text */
+      --brand:#2563eb;     /* primary accent */
+      --brand-ghost:#e0e7ff;
+      --card:#ffffff;      /* white card */
+      --border:#e5e7eb;    /* subtle borders */
+      --header:#ffffff;    /* header bg */
+      --footer:#f3f4f6;    /* footer bg */
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+      line-height:1.5;
+    }
+
+    /* Header (edge-to-edge) */
+    header{
+      position:sticky; top:0; z-index:10;
+      background:var(--header);
+      border-bottom:1px solid var(--border);
+      width:100%;
+    }
+    .header-inner{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 24px;     /* inner spacing */
+    }
+    .brand{display:flex; gap:12px; align-items:center}
+    .logo{font-size:24px}
+    .app-title{margin:0; font-size:20px; font-weight:700}
+    .app-subtitle{margin:0; color:var(--muted); font-size:13px}
+
+    /* Nav */
+    nav{display:flex; align-items:center; gap:12px; flex-wrap:wrap}
+    nav a{color:var(--text); text-decoration:none; padding:8px 12px; border-radius:8px}
+    nav a:hover{background:var(--border)}
+
+    /* Buttons */
+    .btn{display:inline-block; text-decoration:none; padding:10px 16px; border-radius:8px}
+    .btn-primary{background:var(--brand); color:#fff}
+    .btn-primary:hover{filter:brightness(.95)}
+    .btn-ghost{background:var(--brand-ghost); color:var(--brand)}
+
+    /* Main content (edge-to-edge with padding) */
+    main.container{
+      width:100%;
+      margin:0;
+      padding:32px 24px;
+    }
+
+    /* Cards */
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:24px;
+      box-shadow:0 4px 10px rgba(0,0,0,.05);
+    }
+
+    /* Footer (edge-to-edge) */
+    footer{
+      border-top:1px solid var(--border);
+      background:var(--footer);
+      width:100%;
+    }
+    .footer-inner{
+      display:flex; justify-content:space-between; align-items:center;
+      color:var(--muted); font-size:12px;
+      padding:16px 24px;
+    }
+
+    @media (max-width:640px){
+      .app-title{font-size:18px}
+      nav a{padding:8px 10px}
+      .btn{padding:9px 14px}
+      main.container{padding:24px 16px}
+      .header-inner,.footer-inner{padding-left:16px; padding-right:16px}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">📚</div>
+        <div>
+          <h1 class="app-title">Rural Schools Attendance Monitoring System</h1>
+          <p class="app-subtitle">Multi-school, pan-India | Face (RFID later)</p>
+        </div>
+      </div>
+
+      <nav>
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="#about">About</a>
+
+        {% if current_user %}
+          {% if current_user.role == "Admin" %}
+            <a href="{{ url_for('dashboard_admin') }}">Admin</a>
+          {% elif current_user.role == "Teacher" %}
+            <a href="{{ url_for('dashboard_teacher') }}">Teacher</a>
+          {% else %}
+            <a href="{{ url_for('dashboard_student') }}">Student</a>
+          {% endif %}
+
+        <span style="margin-left:4px; color:var(--muted); font-size:14px">
+          Hello, {{ current_user.login_id }} ({{ current_user.role }})
+        </span>
+        <a class="btn btn-ghost" href="{{ url_for('logout') }}">Logout</a>
+        {% else %}
+          <a class="btn btn-primary" href="{{ url_for('login') }}">Login</a>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <span>{{ APP_NAME }} • {{ APP_VERSION }} • {{ APP_DATE }}</span>
+      <span>© 2025</span>
+    </div>
+  </footer>
+</body>
+</html>

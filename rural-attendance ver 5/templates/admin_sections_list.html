@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="card">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+    <h2 style="margin:0">Sections — {{ cls.school_name }} / {{ cls.name }}</h2>
+    <a class="btn btn-primary" href="{{ url_for('admin_sections_new', class_id=cls.id) }}">Add Section</a>
+  </div>
+
+  {% if sections %}
+    <div style="overflow:auto;margin-top:12px">
+      <table style="width:100%;border-collapse:collapse">
+        <thead>
+          <tr style="text-align:left;border-bottom:1px solid var(--border)">
+            <th style="padding:10px">Section</th>
+            <th style="padding:10px">Created</th>
+            <th style="padding:10px">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for s in sections %}
+          <tr style="border-bottom:1px solid var(--border)">
+            <td style="padding:10px">{{ s.name }}</td>
+            <td style="padding:10px">{{ s.created_at }}</td>
+            <td style="padding:10px;white-space:nowrap">
+              <a class="btn btn-ghost"
+                 href="{{ url_for('admin_students_list', class_id=cls.id, section_id=s.id) }}">
+                Students
+              </a>
+              <!-- NEW: Take Attendance (pre-fills class; section picked on next screen) -->
+              <a class="btn btn-ghost"
+                 href="{{ url_for('attendance_select', class_id=cls.id) }}">
+                Take Attendance
+              </a>
+              <!-- NEW: Daily Report (per class; date selectable on report page) -->
+              <a class="btn btn-ghost"
+                 href="{{ url_for('attendance_report_daily', class_id=cls.id) }}">
+                Daily Report
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p style="margin-top:12px;color:var(--muted)">No sections yet. Click “Add Section”.</p>
+  {% endif %}
+
+  <p style="margin-top:12px">
+    <a class="btn btn-ghost" href="{{ url_for('admin_classes_list', school_id=cls.school_id) }}">← Back to Classes</a>
+  </p>
+</section>
+{% endblock %}
