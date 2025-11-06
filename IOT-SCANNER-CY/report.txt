@@ -1,0 +1,14 @@
+Device 10.154.8.123 (MAC: Unknown)
+  [INFO] FTP detected but anonymous login disabled on 10.154.8.123
+  [CRITICAL] Telnet open on 10.154.8.123 — insecure service!
+  [INFO] No weak HTTP credentials detected on 10.154.8.123
+  [INFO] HTTPS open on 10.154.8.123 (check if SSL/TLS is configured securely).
+  [MEDIUM] RTSP open on 10.154.8.123 — may stream video, ensure authentication.
+
+Device 10.154.8.98 (MAC: Unknown)
+  [INFO] FTP detected but anonymous login disabled on 10.154.8.98
+  [CRITICAL] Telnet open on 10.154.8.98 — insecure service!
+  [INFO] No weak HTTP credentials detected on 10.154.8.98
+  [INFO] HTTPS open on 10.154.8.98 (check if SSL/TLS is configured securely).
+  [MEDIUM] RTSP open on 10.154.8.98 — may stream video, ensure authentication.
+
